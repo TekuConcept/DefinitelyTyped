@@ -27,10 +27,6 @@ export type PacketCmd =
     'unsuback' |
     'unsubscribe';
 
-export interface IUserProperties { [key: string]: any; }
-export interface IOptions { [key: string]: any; }
-export interface IGrantedValues { [key: string]: any; }
-
 export type Packet =
     IConnectPacket |
     IPublishPacket |
@@ -74,7 +70,7 @@ export interface IConnectPacket extends IPacket {
             contentType?: string;
             responseTopic?: string;
             correlationData?: Buffer;
-            userProperties?: IUserProperties;
+            userProperties?: any;
         }
     };
     properties?: {
@@ -84,7 +80,7 @@ export interface IConnectPacket extends IPacket {
         topicAliasMaximum?: number;
         requestResponseInformation?: boolean;
         requestProblemInformation?: boolean;
-        userProperties?: IUserProperties;
+        userProperties?: any;
         authenticationMethod?: string;
         authenticationData?: Buffer;
     };
@@ -103,7 +99,7 @@ export interface IPublishPacket extends IPacket {
         topicAlias?: number;
         responseTopic?: string;
         correlationData?: Buffer;
-        userProperties?: IUserProperties;
+        userProperties?: any;
         subscriptionIdentifier?: number;
         contentType?: string;
     };
@@ -122,7 +118,7 @@ export interface IConnackPacket extends IPacket {
         assignedClientIdentifier?: string;
         topicAliasMaximum?: number;
         reasonString?: string;
-        userProperties?: IUserProperties;
+        userProperties?: any;
         wildcardSubscriptionAvailable?: boolean;
         subscriptionIdentifiersAvailable?: boolean;
         sharedSubscriptionAvailable?: boolean;
@@ -147,7 +143,7 @@ export interface ISubscribePacket extends IPacket {
     subscriptions: ISubscription[];
     properties?: {
         reasonString?: string;
-        userProperties?: IUserProperties;
+        userProperties?: any;
     };
 }
 
@@ -155,16 +151,16 @@ export interface ISubackPacket extends IPacket {
     cmd: 'suback';
     properties?: {
         reasonString?: string;
-        userProperties?: IUserProperties;
+        userProperties?: any;
     };
-    granted: number[] | IGrantedValues[];
+    granted: number[] | any[];
 }
 
 export interface IUnsubscribePacket extends IPacket {
     cmd: 'unsubscribe';
     properties?: {
         reasonString?: string;
-        userProperties?: IUserProperties;
+        userProperties?: any;
     };
     unsubscriptions: string[];
 }
@@ -173,7 +169,7 @@ export interface IUnsubackPacket extends IPacket {
     cmd: 'unsuback';
     properties?: {
         reasonString?: string;
-        userProperties?: IUserProperties;
+        userProperties?: any;
     };
 }
 
@@ -181,7 +177,7 @@ export interface IPubackPacket extends IPacket {
     cmd: 'puback';
     properties?: {
         reasonString?: string;
-        userProperties?: IUserProperties;
+        userProperties?: any;
     };
 }
 
@@ -189,7 +185,7 @@ export interface IPubcompPacket extends IPacket {
     cmd: 'pubcomp';
     properties?: {
         reasonString?: string;
-        userProperties?: IUserProperties;
+        userProperties?: any;
     };
 }
 
@@ -197,7 +193,7 @@ export interface IPubrelPacket extends IPacket {
     cmd: 'pubrel';
     properties?: {
         reasonString?: string;
-        userProperties?: IUserProperties;
+        userProperties?: any;
     };
 }
 
@@ -205,7 +201,7 @@ export interface IPubrecPacket extends IPacket {
     cmd: 'pubrec';
     properties?: {
         reasonString?: string;
-        userProperties?: IUserProperties;
+        userProperties?: any;
     };
 }
 
@@ -222,7 +218,7 @@ export interface IDisconnectPacket extends IPacket {
     properties?: {
         sessionExpiryInterval?: number;
         reasonString?: string;
-        userProperties?: IUserProperties;
+        userProperties?: any;
         serverReference?: string;
     };
 }
@@ -230,15 +226,15 @@ export interface IDisconnectPacket extends IPacket {
 export interface Parser extends EventEmitter {
     on(event: 'packet', callback: (packet: Packet) => void): this;
     on(event: 'error', callback: (error: any) => void): this;
-    parse(buffer: Buffer, opts?: IOptions): number;
+    parse(buffer: Buffer, opts?: any): number;
 }
 
-export function parser(opts?: IOptions): Parser;
+export function parser(opts?: any): Parser;
 
-export function generate(packet: Packet, opts?: IOptions): Buffer;
+export function generate(packet: Packet, opts?: any): Buffer;
 
 export function writeToStream(object: Packet,
-    stream: WritableStream, opts?: IOptions): void;
+    stream: WritableStream, opts?: any): void;
 
 export namespace writeToStream {
     let cacheNumbers: boolean;
